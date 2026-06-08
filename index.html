@@ -6,11 +6,11 @@
     <title>גלריית כינוס הבוגרים</title>
     <style>
         :root {
-            --gold-primary: #C5A059;   /* זהב עמוק התואם ללוגו */
+            --gold-primary: #C5A059;   /* זהב עמוק */
             --gold-light: #F3E5AB;     /* זהב בהיר */
-            --bg-cream: #FDFBF7;       /* רקע שמנת חם ויוקרתי */
+            --bg-cream: #FDFBF7;       /* רקע שמנת חם */
             --text-dark: #3E2723;      /* חום עמוק לטקסטים */
-            --card-bg: #FFFFFF;        /* רקע לבן נקי לכרטיסיית תמונה */
+            --card-bg: #FFFFFF;        /* רקע לבן לכרטיסיית תמונה */
         }
 
         body {
@@ -207,7 +207,6 @@
 <body>
 
     <div class="gallery-header">
-        <!-- הלוגו של הישיבה - נשאר בשרת הישן או שתוכלו להעביר אותו גם ל-GitHub -->
         <img class="logo-placeholder" src="https://lh3.googleusercontent.com/d/1TJBYWJigl0SnuywXrx3cjKAKfs6oX6JY=w300" alt="לוגו">
         <h1>רגעים מכינוס הבוגרים</h1>
         <div class="divider"></div>
@@ -216,17 +215,15 @@
 
     <div class="gallery-grid" id="galleryGrid"></div>
 
-<div id="lightbox" class="lightbox">
-    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-    <span class="lightbox-nav lightbox-prev" onclick="prevImage()">&#10094;</span>
-    <span class="lightbox-nav lightbox-next" onclick="nextImage()">&#10095;</span>
-    <img id="lightboxImg" class="lightbox-content" src="" alt="תמונה מוגדלת">
-    <div id="lightboxCaption" class="lightbox-caption"></div>
-</div>
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <span class="lightbox-nav lightbox-prev" onclick="prevImage()">&#10094;</span>
+        <span class="lightbox-nav lightbox-next" onclick="nextImage()">&#10095;</span>
+        <img id="lightboxImg" class="lightbox-content" src="" alt="תמונה מוגדלת">
+        <div id="lightboxCaption" class="lightbox-caption"></div>
+    </div>
 
     <script>
-        // המערך שלכם המכיל רק את השמות. אין יותר צורך במזהי גוגל דרייב מסורבלים.
-        // הוספנו כותרות לתמונות הראשונות; לכל השאר תתווסף כותרת אוטומטית לפי מספר התמונה.
         const imagesData = [
           { "title": "כנס זיכרון הרב גרשנוביץ - 1" },
           { "title": "כנס זיכרון הרב גרשנוביץ - 2" },
@@ -266,7 +263,6 @@
           { "title": "כנס זיכרון הרב גרשנוביץ - 36" }
         ];
 
-        // מילוי אוטומטי של שאר 162 המקומות כדי שלא תצטרכו להקליד ידנית את כל המערך מחדש
         const totalImages = 395;
         while(imagesData.length < totalImages) {
             const currentNum = imagesData.length + 1;
@@ -283,7 +279,6 @@
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
                 
-                // מנגנון חלוקת גדלים אומנותי אוטומטי
                 if (index % 19 === 0) {
                     item.classList.add('big');
                 } else if (index % 7 === 0) {
@@ -292,8 +287,8 @@
                     item.classList.add('tall');
                 }
 
-                // יצירת קישור ישיר ל-GitHub. החליפו את YOUR_GITHUB_USERNAME בשם המשתמש שלכם ב-GitHub
-                const imgUrl = `https://raw.githubusercontent.com/b033069804-cmyk/alumni-gallery/main/${index + 1}.jpg`;
+                // שימוש בנתיב יחסי עבור GitHub Pages (מצביע לתיקיית thumbs)
+                const imgUrl = `thumbs/${index + 1}.jpg`;
 
                 item.innerHTML = `
                     <img src="${imgUrl}" alt="${img.title || 'תמונה מכינוס הבוגרים'}" loading="lazy">
@@ -312,8 +307,8 @@
             const lightboxImg = document.getElementById('lightboxImg');
             const lightboxCaption = document.getElementById('lightboxCaption');
 
-            // טעינת תמונה מלאה מ-GitHub לתוך ה-Lightbox
-            lightboxImg.src = `https://raw.githubusercontent.com/b033069804-cmyk/alumni-gallery/main/${index + 1}.jpg`;
+            // פתיחת התמונה המלאה המקורית (נתיב יחסי)
+            lightboxImg.src = `${index + 1}.jpg`;
             lightboxCaption.textContent = img.title || '';
             lightbox.classList.add('active');
         }
@@ -334,7 +329,7 @@
 
         function updateLightbox() {
             const img = imagesData[currentImageIndex];
-            document.getElementById('lightboxImg').src = `https://raw.githubusercontent.com/b033069804-cmyk/alumni-gallery/main/${currentImageIndex + 1}.jpg`;
+            document.getElementById('lightboxImg').src = `${currentImageIndex + 1}.jpg`;
             document.getElementById('lightboxCaption').textContent = img.title || '';
         }
 
