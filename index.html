@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>גלריית כינוס הבוגרים</title>
+    <style>
+        :root {
+            --gold-primary: #C5A059;   /* זהב עמוק התואם ללוגו */
+            --gold-light: #F3E5AB;     /* זהב בהיר */
+            --bg-cream: #FDFBF7;       /* רקע שמנת חם ויוקרתי */
+            --text-dark: #3E2723;      /* חום עמוק לטקסטים */
+            --card-bg: #FFFFFF;        /* רקע לבן נקי לכרטיסיית תמונה */
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            direction: rtl;
+        }
+
+        .gallery-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo-placeholder {
+            max-width: 150px;
+            margin: 0 auto 15px auto;
+            display: block;
+        }
+
+        .gallery-header h1 {
+            color: var(--text-dark);
+            font-size: 2.3rem;
+            margin-bottom: 5px;
+            font-weight: 700;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+        }
+
+        .gallery-header .divider {
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
+            margin: 10px auto;
+        }
+
+        .gallery-header p {
+            font-size: 1.1rem;
+            color: #6D4C41;
+            margin-top: 5px;
+        }
+
+        /* גריד אומנותי בסגנון פסיפס (Masonry Grid) */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            grid-auto-rows: 200px;
+            gap: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.15);
+            border: 2px solid rgba(197, 160, 89, 0.25);
+            background-color: var(--card-bg);
+            cursor: pointer;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* הגדרות לעימוד משתנה (חלק מהתמונות גדולות יותר) */
+        @media (min-width: 600px) {
+            .gallery-item.wide {
+                grid-column: span 2;
+            }
+            .gallery-item.tall {
+                grid-row: span 2;
+            }
+            .gallery-item.big {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 8px 25px rgba(197, 160, 89, 0.4);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.06);
+        }
+
+        /* כיתוב על התמונה בזמן מעבר עכבר */
+        .item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(62, 39, 35, 0.9));
+            color: #ffffff;
+            padding: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .gallery-item:hover .item-overlay {
+            opacity: 1;
+        }
+
+        /* מנגנון הצגת תמונה מוגדלת (Lightbox) */
+        .lightbox {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(30, 20, 15, 0.95);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 80%;
+            border: 3px solid var(--gold-primary);
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .lightbox-caption {
+            color: var(--gold-light);
+            margin-top: 15px;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #ffffff;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .lightbox-close:hover {
+            color: var(--gold-primary);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffffff;
+            font-size: 40px;
+            cursor: pointer;
+            user-select: none;
+            padding: 15px;
+            transition: color 0.2s;
+        }
+
+        .lightbox-nav:hover {
+            color: var(--gold-primary);
+        }
+
+        .lightbox-prev { right: 20px; }
+        .lightbox-next { left: 20px; }
+
+        @media (max-width: 600px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                grid-auto-rows: 130px;
+                gap: 8px;
+            }
+            .lightbox-nav { font-size: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gallery-header">
+        <!-- הלוגו של הישיבה - נשאר בשרת הישן או שתוכלו להעביר אותו גם ל-GitHub -->
+        <img class="logo-placeholder" src="https://lh3.googleusercontent.com/d/1TJBYWJigl0SnuywXrx3cjKAKfs6oX6JY=w300" alt="לוגו">
+        <h1>רגעים מכינוס הבוגרים</h1>
+        <div class="divider"></div>
+        <p>גלריית תמונות מכינוס הבוגרים של ישיבת "הנגב – שכר שכיר"</p>
+    </div>
+
+    <div class="gallery-grid" id="galleryGrid"></div>
+
+<div id="lightbox" class="lightbox">
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <span class="lightbox-nav lightbox-prev" onclick="prevImage()">&#10094;</span>
+    <span class="lightbox-nav lightbox-next" onclick="nextImage()">&#10095;</span>
+    <img id="lightboxImg" class="lightbox-content" src="" alt="תמונה מוגדלת">
+    <div id="lightboxCaption" class="lightbox-caption"></div>
+</div>
+
+    <script>
+        // המערך שלכם המכיל רק את השמות. אין יותר צורך במזהי גוגל דרייב מסורבלים.
+        // הוספנו כותרות לתמונות הראשונות; לכל השאר תתווסף כותרת אוטומטית לפי מספר התמונה.
+        const imagesData = [
+          { "title": "כנס זיכרון הרב גרשנוביץ - 1" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 2" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 3" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 4" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 5" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 6" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 7" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 8" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 9" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 10" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 11" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 12" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 13" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 14" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 15" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 16" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 17" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 18" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 19" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 20" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 21" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 22" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 23" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 24" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 25" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 26" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 27" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 28" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 29" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 30" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 31" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 32" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 33" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 34" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 35" },
+          { "title": "כנס זיכרון הרב גרשנוביץ - 36" }
+        ];
+
+        // מילוי אוטומטי של שאר 162 המקומות כדי שלא תצטרכו להקליד ידנית את כל המערך מחדש
+        const totalImages = 395;
+        while(imagesData.length < totalImages) {
+            const currentNum = imagesData.length + 1;
+            imagesData.push({ "title": `כנס זיכרון הרב גרשנוביץ - ${currentNum}` });
+        }
+
+        let currentImageIndex = 0;
+
+        function initGallery() {
+            const grid = document.getElementById('galleryGrid');
+            grid.innerHTML = '';
+
+            imagesData.forEach((img, index) => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                
+                // מנגנון חלוקת גדלים אומנותי אוטומטי
+                if (index % 19 === 0) {
+                    item.classList.add('big');
+                } else if (index % 7 === 0) {
+                    item.classList.add('wide');
+                } else if (index % 11 === 0) {
+                    item.classList.add('tall');
+                }
+
+                // יצירת קישור ישיר ל-GitHub. החליפו את YOUR_GITHUB_USERNAME בשם המשתמש שלכם ב-GitHub
+                const imgUrl = `https://raw.githubusercontent.com/b033069804-cmyk/alumni-gallery/main/${index + 1}.jpg`;
+
+                item.innerHTML = `
+                    <img src="${imgUrl}" alt="${img.title || 'תמונה מכינוס הבוגרים'}" loading="lazy">
+                    ${img.title ? `<div class="item-overlay">${img.title}</div>` : ''}
+                `;
+
+                item.onclick = () => openLightbox(index);
+                grid.appendChild(item);
+            });
+        }
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            const img = imagesData[index];
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxCaption = document.getElementById('lightboxCaption');
+
+            // טעינת תמונה מלאה מ-GitHub לתוך ה-Lightbox
+            lightboxImg.src = `https://raw.githubusercontent.com/b033069804-cmyk/alumni-gallery/main/${index + 1}.jpg`;
+            lightboxCaption.textContent = img.title || '';
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % imagesData.length;
+            updateLightbox();
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + imagesData.length) % imagesData.length;
+            updateLightbox();
+        }
+
+        function updateLightbox() {
+            const img = imagesData[currentImageIndex];
+            document.getElementById('lightboxImg').src = `https://raw.githubusercontent.com/b033069804-cmyk/alumni-gallery/main/${currentImageIndex + 1}.jpg`;
+            document.getElementById('lightboxCaption').textContent = img.title || '';
+        }
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') prevImage();
+            if (e.key === 'ArrowLeft') nextImage();
+        });
+
+        document.getElementById('lightbox').addEventListener('click', (e) => {
+            if (e.target.id === 'lightbox') closeLightbox();
+        });
+
+        initGallery();
+    </script>
+</body>
+</html>
