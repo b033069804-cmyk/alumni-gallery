@@ -10,7 +10,7 @@
             --gold-light: #F3E5AB;     /* זהב בהיר */
             --bg-cream: #FDFBF7;       /* רקע שמנת חם */
             --text-dark: #3E2723;      /* חום עמוק לטקסטים */
-            --card-bg: #FFFFFF;        /* רקע לבן לכרטיסיית תמונה */
+            --card-bg: #FFFFFF;        /* רקע לבן לכרטיסייה */
         }
 
         body {
@@ -24,109 +24,275 @@
 
         .gallery-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .logo-placeholder {
-            max-width: 150px;
+            max-width: 130px;
             margin: 0 auto 15px auto;
             display: block;
         }
 
         .gallery-header h1 {
             color: var(--text-dark);
-            font-size: 2.3rem;
+            font-size: 2.1rem;
             margin-bottom: 5px;
             font-weight: 700;
-            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
         }
 
         .gallery-header .divider {
-            width: 100px;
+            width: 80px;
             height: 3px;
             background: linear-gradient(90deg, transparent, var(--gold-primary), transparent);
             margin: 10px auto;
         }
 
         .gallery-header p {
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             color: #6D4C41;
             margin-top: 5px;
         }
 
-        /* גריד אומנותי בסגנון פסיפס (Masonry Grid) */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            grid-auto-rows: 200px;
-            gap: 15px;
-            max-width: 1200px;
-            margin: 0 auto;
+        /* מערכת כרטיסיות (Tabs) */
+        .tabs-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 35px;
+            flex-wrap: wrap;
         }
 
+        .tab-btn {
+            background-color: transparent;
+            color: var(--text-dark);
+            border: 2px solid var(--gold-primary);
+            padding: 10px 22px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background-color: var(--gold-light);
+            border-color: var(--gold-primary);
+        }
+
+        .tab-btn.active {
+            background-color: var(--gold-primary);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(197, 160, 89, 0.3);
+        }
+
+        /* כרטיסיית התוכן הפעילה */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* כרטיסיית קבוצה */
+        .section-card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 0 auto;
+            max-width: 1200px;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.05);
+        }
+
+        .section-main-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+
+        @media (min-width: 900px) {
+            .section-main-row {
+                grid-template-columns: 1.2fr 2fr;
+            }
+        }
+
+        .section-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .section-desc {
+            font-size: 1.05rem;
+            color: #5D4037;
+            line-height: 1.6;
+            margin-bottom: 24px;
+            background-color: var(--bg-cream);
+            padding: 15px;
+            border-right: 4px solid var(--gold-primary);
+            border-radius: 4px;
+        }
+
+        .btn-toggle {
+            background-color: var(--gold-primary);
+            color: #ffffff;
+            border: none;
+            padding: 10px 18px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            align-self: flex-start;
+            box-shadow: 0 4px 10px rgba(197, 160, 89, 0.15);
+        }
+
+        .btn-toggle:hover {
+            background-color: #B4904C;
+        }
+
+        .btn-toggle.active {
+            background-color: #5D4037;
+        }
+
+        /* גריד קבוע של 1 גדולה ו-3 קטנות */
+        .main-photo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(2, 110px);
+            gap: 16px;
+        }
+
+        @media (min-width: 600px) {
+            .main-photo-grid {
+                grid-template-rows: repeat(2, 160px);
+            }
+        }
+
+        /* עיצוב התמונות */
         .gallery-item {
             position: relative;
             overflow: hidden;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.15);
-            border: 2px solid rgba(197, 160, 89, 0.25);
-            background-color: var(--card-bg);
+            background-color: #ffffff;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid rgba(197, 160, 89, 0.25);
+            box-shadow: 0 8px 24px rgba(30, 20, 15, 0.06);
             cursor: pointer;
-            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        /* הגדרות לעימוד משתנה (חלק מהתמונות גדולות יותר) */
-        @media (min-width: 600px) {
-            .gallery-item.wide {
-                grid-column: span 2;
-            }
-            .gallery-item.tall {
-                grid-row: span 2;
-            }
-            .gallery-item.big {
-                grid-column: span 2;
-                grid-row: span 2;
-            }
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), 
+                        border-color 0.4s ease, 
+                        box-shadow 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
         .gallery-item:hover {
-            transform: translateY(-5px);
+            transform: translateY(-6px);
             border-color: var(--gold-primary);
-            box-shadow: 0 8px 25px rgba(197, 160, 89, 0.4);
+            box-shadow: 0 16px 32px rgba(197, 160, 89, 0.22);
         }
+
+        .gallery-item.featured {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        /* פינות זהב לתמונה הגדולה */
+        .gallery-item.featured::before,
+        .gallery-item.featured::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border: 2px solid var(--gold-primary);
+            z-index: 2;
+            pointer-events: none;
+            transition: all 0.4s ease;
+        }
+
+        .gallery-item.featured::before {
+            top: 12px;
+            left: 12px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .gallery-item.featured::after {
+            bottom: 12px;
+            right: 12px;
+            border-left: none;
+            border-top: none;
+        }
+
+        .gallery-item.featured:hover::before {
+            top: 6px;
+            left: 6px;
+        }
+
+        .gallery-item.featured:hover::after {
+            bottom: 6px;
+            right: 6px;
+        }
+
+        .gallery-item.small-1 { grid-column: span 1; grid-row: span 1; }
+        .gallery-item.small-2 { grid-column: span 1; grid-row: span 1; }
+        .gallery-item.small-3 { grid-column: span 2; grid-row: span 1; }
 
         .gallery-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            border-radius: 2px;
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
             display: block;
         }
 
         .gallery-item:hover img {
-            transform: scale(1.06);
+            transform: scale(1.05);
         }
 
-        /* כיתוב על התמונה בזמן מעבר עכבר */
+        /* כיתוב שקוף מטושטש */
         .item-overlay {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(62, 39, 35, 0.9));
+            bottom: -50px;
+            left: 8px;
+            right: 8px;
+            background: rgba(62, 39, 35, 0.85);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(197, 160, 89, 0.3);
             color: #ffffff;
-            padding: 12px;
+            padding: 10px;
+            border-radius: 3px;
             opacity: 0;
-            transition: opacity 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
+            z-index: 3;
         }
 
         .gallery-item:hover .item-overlay {
+            bottom: 8px;
             opacity: 1;
         }
 
-        /* מנגנון הצגת תמונה מוגדלת (Lightbox) */
+        /* גריד מוסתר */
+        .expanded-gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            grid-auto-rows: 140px;
+            gap: 12px;
+            margin-top: 25px;
+            border-top: 1px dashed rgba(197, 160, 89, 0.4);
+            padding-top: 20px;
+        }
+
+        /* לייטבוקס */
         .lightbox {
             display: none;
             position: fixed;
@@ -141,9 +307,7 @@
             flex-direction: column;
         }
 
-        .lightbox.active {
-            display: flex;
-        }
+        .lightbox.active { display: flex; }
 
         .lightbox-content {
             max-width: 90%;
@@ -168,11 +332,6 @@
             font-size: 40px;
             font-weight: bold;
             cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .lightbox-close:hover {
-            color: var(--gold-primary);
         }
 
         .lightbox-nav {
@@ -184,24 +343,10 @@
             cursor: pointer;
             user-select: none;
             padding: 15px;
-            transition: color 0.2s;
-        }
-
-        .lightbox-nav:hover {
-            color: var(--gold-primary);
         }
 
         .lightbox-prev { right: 20px; }
         .lightbox-next { left: 20px; }
-
-        @media (max-width: 600px) {
-            .gallery-grid {
-                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-                grid-auto-rows: 130px;
-                gap: 8px;
-            }
-            .lightbox-nav { font-size: 30px; }
-        }
     </style>
 </head>
 <body>
@@ -213,7 +358,11 @@
         <p>גלריית תמונות מכינוס הבוגרים של ישיבת "הנגב – שכר שכיר"</p>
     </div>
 
-    <div class="gallery-grid" id="galleryGrid"></div>
+    <!-- כפתורי הניווט (Tabs) ייטענו כאן -->
+    <div class="tabs-nav" id="tabsNav"></div>
+
+    <!-- התוכן של הכרטיסיות ייטען כאן -->
+    <div id="galleryContainer"></div>
 
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
@@ -224,93 +373,280 @@
     </div>
 
     <script>
-        const imagesData = [
-          { "title": "כנס זיכרון הרב גרשנוביץ - 1" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 2" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 3" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 4" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 5" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 6" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 7" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 8" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 9" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 10" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 11" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 12" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 13" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 14" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 15" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 16" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 17" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 18" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 19" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 20" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 21" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 22" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 23" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 24" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 25" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 26" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 27" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 28" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 29" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 30" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 31" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 32" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 33" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 34" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 35" },
-          { "title": "כנס זיכרון הרב גרשנוביץ - 36" }
+        // ==========================================================
+        // כאן אתה מעדכן, ממיין וקובע את שמות התמונות לכל טאב [1]
+        // ==========================================================
+        const customSections = [
+            {
+                title: "מלאכת מחשבת: שלבי הכנת ועריכת היכל המלכות",
+                description: "כאן תוכל לכתוב תיאור קצר ומסקר המציג את ההכנות, סידור ועיצוב האולם המפואר לקראת הגעת הבוגרים.",
+                featuredImageId: 380,           // מספר התמונה הגדולה הראשית בטאב זה
+                smallImageIds: [370, 394, 392],     // מספרי 3 התמונות הקטנות שיופיעו לצדה בדף הראשי
+                remainingImageIds: [3,371,372,374,375,376,377,378,379,381,382,383,384,385,386,387,388,389,390,391,393,], // שאר התמונות בקטגוריה זו שיופיעו רק בלחיצה על 'הצג את כל התמונות'
+                titles: {
+                    380: "שולחנות ערוכים כיד המלך",
+                    370: "מראה האולם",
+                    394: "המזרח",
+                    392: "ברוכים הבאים"
+                    // תוכל להוסיף כאן כותרות לשאר תמונות הקבוצה לפי הצורך, למשל:
+                    // 5: "כותרת לתמונה 5"
+                }
+            },
+            {
+                title: "ונועדו יחדיו: קבלת פנים ושיח רעים",
+                description: "תיאור קצר המסקר את רגעי קבלת הפנים, החיבוקים, לחיצות הידיים ומפגשי הרעים המרגשים בין בוגרי הישיבה מכל השנים.",
+                featuredImageId: 30,
+                smallImageIds: [188, 11, 61],
+                remainingImageIds: [10,114,115,116,12,14,141,142,143,144,145,150,151,152,153,154,156,157,158,159,160,17,18,181,184,185,186,189,19,190,20,21,258,259,260,261,27,270,272,273,274,275,277,278,28,280,281,282,283,284,285,29,31,34,36,37,38,41,43,44,45,56,58,59,60,62,63,73,76,77,78,80,81,82,83,84,85,89,],
+                titles: {
+                    30: "קבלת פנים - מרגשת",
+                    188: "שיח רעים והעלאת זיכרונות",
+                    11: "לחיצת ידיים נרגשת בכניסה",
+                    61: "עוד אזכרה ימים מקדם"
+                }
+            },
+            {
+                title: "פאר מקדושים: שולחן המזרח",
+                description: "תיאור קצר המציג את שולחן המזרח, הגעת הרבנים, ראשי הישיבה וגדולי התורה שפיארו בנוכחותם את שולחן הכבוד של המעמד.",
+                featuredImageId: 202,
+                smallImageIds: [104, 71, 109],
+                remainingImageIds: [1,100,102,103,104,105,106,107,108,109,110,111,117,118,119,120,121,122,123,125,126,127,128,129,13,130,131,132,133,134,136,137,138,139,140,147,148,149,15,16,161,162,163,164,166,167,168,169,170,171,172,173,174,175,177,178,179,180,182,183,191,192,193,194,195,196,197,199,200,201,202,203,204,205,206,207,208,210,211,22,23,25,26,289,290,309,314,32,320,33,330,331,332,333,39,4,40,42,47,48,49,5,50,51,52,53,54,55,6,64,65,66,67,69,7,70,71,72,74,75,8,86,87,88,9,91,92,93,94,95,96,97,98,99,],
+                titles: {
+                    202: "רבותינו ראשי הישיבה שליט\"א",
+                    104: "מרן ראש הישיבה בדברי פתיחה",
+                    71: "סיום הש\"ס",
+                    109: "עטרותינו בראשינו"
+                }
+            },
+            {
+                title: "וכל העם רואים: ביאת רבינו מרן גאון ישראל שליט\"א",
+                description: "רגעי השיא המרגשים, השירה האדירה וההתעוררות העצומה בעת כניסתו של רשכבה\"ג מרן ראש הישיבה הגר\"ד לנדו שליט\"א להיכל המעמד.",
+                featuredImageId: 244,
+                smallImageIds: [255, 209, 322],
+                remainingImageIds: [101,112,113,124,135,146,155,165,176,187,198,2,209,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,24,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,262,263,264,265,266,267,268,269,276,287,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,310,311,312,313,315,316,317,318,319,321,322,323,324,325,326,327,328,329,334,335,336,337,338,339,340,341,342,343,344,345,346,348,349,35,350,351,352,353,355,356,359,360,362,363,364,365,366,367,368,369,373,46,57,68,79,90,],
+                titles: {
+                    244: "רבינו גאון ישראל בדברי חיזוק וברכה",
+                    255: "רגעי שיא בעת שירה",
+                    209: "רבינו ראש הישיבה שליט\"א נושא דברים בפני מרן שליט\"א",
+                    322: "רבותינו שליט\"א מקבלים את פני מרן"
+                }
+            },
+            {
+                title: "תמונות של הפאנל",
+                description: "תיאור קצר המסכם את הפאנל המרתק, דברי המחשבה וההשקפה, השאלות והתשובות שעלו במהלכו עם רבני הישיבה.",
+                featuredImageId: 31,
+                smallImageIds: [32, 33, 34],
+                remainingImageIds: [35, 36, 37],
+                titles: {
+                    31: "רבני וחברי הפאנל המרכזי - תמונה ראשית",
+                    32: "מהלך הדיון והשאלות המרתקות",
+                    33: "קהל הבוגרים מאזין בריכוז",
+                    34: "הקשבה דרוכה ורישום דברי הרבנים"
+                }
+            }
         ];
 
-        const totalImages = 395;
-        while(imagesData.length < totalImages) {
-            const currentNum = imagesData.length + 1;
-            imagesData.push({ "title": `כנס זיכרון הרב גרשנוביץ - ${currentNum}` });
+        const totalImages = 394;
+
+        // עיבוד דינמי לקבוצה כללית בסוף (מציג את שאר התמונות שטרם שובצו לקטגוריות)
+        const allAssignedIds = new Set();
+        customSections.forEach(sec => {
+            if (sec.featuredImageId) allAssignedIds.add(sec.featuredImageId);
+            if (sec.smallImageIds) sec.smallImageIds.forEach(id => allAssignedIds.add(id));
+            if (sec.remainingImageIds) sec.remainingImageIds.forEach(id => allAssignedIds.add(id));
+        });
+
+        const remainingIds = [];
+        for (let i = 1; i <= totalImages; i++) {
+            if (!allAssignedIds.has(i)) remainingIds.push(i);
         }
 
-        let currentImageIndex = 0;
-
-        function initGallery() {
-            const grid = document.getElementById('galleryGrid');
-            grid.innerHTML = '';
-
-            imagesData.forEach((img, index) => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                
-                if (index % 19 === 0) {
-                    item.classList.add('big');
-                } else if (index % 7 === 0) {
-                    item.classList.add('wide');
-                } else if (index % 11 === 0) {
-                    item.classList.add('tall');
-                }
-
-                // שימוש בנתיב יחסי עבור GitHub Pages (מצביע לתיקיית thumbs)
-                const imgUrl = `thumbs/${index + 1}.jpg`;
-
-                item.innerHTML = `
-                    <img src="${imgUrl}" alt="${img.title || 'תמונה מכינוס הבוגרים'}" loading="lazy">
-                    ${img.title ? `<div class="item-overlay">${img.title}</div>` : ''}
-                `;
-
-                item.onclick = () => openLightbox(index);
-                grid.appendChild(item);
+        const sections = [...customSections];
+        if (remainingIds.length > 0) {
+            sections.push({
+                title: "גלריה כללית",
+                description: "מבחר תמונות ורגעים נוספים מכל שעות הכינוס, שיחות המסדרון של הבוגרים והמפגשים החברתיים המרגשים בין חברים ותיקים. (תמונות אלו טרם מוינו לטאבים מוגדרים).",
+                featuredImageId: remainingIds[0],
+                smallImageIds: remainingIds.slice(1, 4),
+                remainingImageIds: remainingIds.slice(4),
+                titles: {}
             });
         }
 
+        // בניית רשימה שטוחה ללייטבוקס
+        const flatImagesList = [];
+        sections.forEach(sec => {
+            if (sec.featuredImageId) flatImagesList.push({ id: sec.featuredImageId, title: sec.titles[sec.featuredImageId] || `תמונה מס' ${sec.featuredImageId}` });
+            if (sec.smallImageIds) sec.smallImageIds.forEach(id => flatImagesList.push({ id: id, title: sec.titles[id] || `תמונה מס' ${id}` }));
+            if (sec.remainingImageIds) sec.remainingImageIds.forEach(id => flatImagesList.push({ id: id, title: sec.titles[id] || `תמונה מס' ${id}` }));
+        });
+
+        let currentImageIndex = 0;
+
+        // אובייקט למעקב ומניעת טעינות כפולות ברקע
+        const preloadedImages = new Set();
+
+        // פונקציה לטעינה שקטה של תמונה מלאה לזיכרון המטמון של הדפדפן [2]
+        function preloadImageById(id) {
+            if (!id || preloadedImages.has(id)) return;
+            preloadedImages.add(id);
+            const img = new Image();
+            img.src = `https://cdn.jsdelivr.net/gh/b033069804-cmyk/alumni-gallery@main/${id}.jpg`;
+        }
+
+        // בניית הכרטיסיות ומערכת הניווט
+        function initGallery() {
+            const tabsNav = document.getElementById('tabsNav');
+            const container = document.getElementById('galleryContainer');
+            
+            tabsNav.innerHTML = '';
+            container.innerHTML = '';
+
+            let globalIndex = 0;
+
+            sections.forEach((sec, idx) => {
+                // 1. יצירת כפתור טאב
+                const tabBtn = document.createElement('button');
+                tabBtn.className = `tab-btn ${idx === 0 ? 'active' : ''}`;
+                tabBtn.textContent = sec.title;
+                tabBtn.onclick = () => switchTab(idx);
+                tabsNav.appendChild(tabBtn);
+
+                // 2. יצירת תוכן הטאב
+                const tabContent = document.createElement('div');
+                tabContent.className = `tab-content ${idx === 0 ? 'active' : ''}`;
+                tabContent.id = `tab-content-${idx}`;
+
+                const card = document.createElement('div');
+                card.className = 'section-card';
+
+                const mainRow = document.createElement('div');
+                mainRow.className = 'section-main-row';
+
+                // פרטי הקבוצה
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'section-info';
+
+                const descP = document.createElement('p');
+                descP.className = 'section-desc';
+                descP.textContent = sec.description;
+                infoDiv.appendChild(descP);
+
+                const hasRemaining = sec.remainingImageIds && sec.remainingImageIds.length > 0;
+                let toggleBtn = null;
+                const expandedGridId = `expanded-grid-${idx}`;
+
+                if (hasRemaining) {
+                    toggleBtn = document.createElement('button');
+                    toggleBtn.className = 'btn-toggle';
+                    toggleBtn.textContent = `הצג את כל התמונות בקטגוריה זו`;
+                    toggleBtn.onclick = () => toggleSection(toggleBtn, expandedGridId);
+                    infoDiv.appendChild(toggleBtn);
+                }
+
+                mainRow.appendChild(infoDiv);
+
+                // גריד תמונות ראשיות
+                const visualsDiv = document.createElement('div');
+                visualsDiv.className = 'section-visuals';
+
+                const mainPhotoGrid = document.createElement('div');
+                mainPhotoGrid.className = 'main-photo-grid';
+
+                if (sec.featuredImageId) {
+                    mainPhotoGrid.appendChild(createGalleryItem(sec.featuredImageId, sec.titles[sec.featuredImageId], 'featured', globalIndex));
+                    globalIndex++;
+                }
+
+                if (sec.smallImageIds) {
+                    sec.smallImageIds.forEach((id, sIdx) => {
+                        mainPhotoGrid.appendChild(createGalleryItem(id, sec.titles[id], `small-${sIdx + 1}`, globalIndex));
+                        globalIndex++;
+                    });
+                }
+
+                visualsDiv.appendChild(mainPhotoGrid);
+                mainRow.appendChild(visualsDiv);
+                card.appendChild(mainRow);
+
+                // גריד תמונות מורחב
+                if (hasRemaining) {
+                    const expandedGrid = document.createElement('div');
+                    expandedGrid.className = 'expanded-gallery-grid';
+                    expandedGrid.id = expandedGridId;
+                    expandedGrid.style.display = 'none';
+
+                    sec.remainingImageIds.forEach(id => {
+                        expandedGrid.appendChild(createGalleryItem(id, sec.titles[id], 'standard', globalIndex));
+                        globalIndex++;
+                    });
+
+                    card.appendChild(expandedGrid);
+                }
+
+                tabContent.appendChild(card);
+                container.appendChild(tabContent);
+            });
+        }
+
+        function createGalleryItem(id, customTitle, sizeClass, flatIdx) {
+            const item = document.createElement('div');
+            item.className = `gallery-item ${sizeClass}`;
+            const title = customTitle || `תמונה מס' ${id}`;
+            const imgUrl = `https://cdn.jsdelivr.net/gh/b033069804-cmyk/alumni-gallery@main/thumbs/${id}.jpg`;
+
+            item.innerHTML = `
+                <img src="${imgUrl}" alt="${title}" loading="lazy">
+                <div class="item-overlay">${title}</div>
+            `;
+
+            // פתרון ב' - 1: הורדה מראש ברקע ברגע שהעכבר מרחף מעל המזעור [2]
+            item.onmouseenter = () => preloadImageById(id);
+
+            item.onclick = () => openLightbox(flatIdx);
+            return item;
+        }
+
+        // החלפת טאבים
+        function switchTab(activeIdx) {
+            document.querySelectorAll('.tab-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === activeIdx);
+            });
+            document.querySelectorAll('.tab-content').forEach((content, idx) => {
+                content.classList.toggle('active', idx === activeIdx);
+            });
+        }
+
+        // הצגת תמונות נוספות בתוך הטאב
+        function toggleSection(btn, gridId) {
+            const grid = document.getElementById(gridId);
+            const isHidden = grid.style.display === 'none';
+
+            if (isHidden) {
+                grid.style.display = 'grid';
+                btn.textContent = 'הצג פחות תמונות';
+                btn.classList.add('active');
+            } else {
+                grid.style.display = 'none';
+                btn.textContent = `הצג את כל התמונות בקטגוריה זו`;
+                btn.classList.remove('active');
+            }
+        }
+
+        // לייטבוקס
         function openLightbox(index) {
             currentImageIndex = index;
-            const img = imagesData[index];
+            const imgData = flatImagesList[index];
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightboxImg');
             const lightboxCaption = document.getElementById('lightboxCaption');
 
-            // פתיחת התמונה המלאה המקורית (נתיב יחסי)
-            lightboxImg.src = `${index + 1}.jpg`;
-            lightboxCaption.textContent = img.title || '';
+            lightboxImg.src = `https://cdn.jsdelivr.net/gh/b033069804-cmyk/alumni-gallery@main/${imgData.id}.jpg`;
+            lightboxCaption.textContent = imgData.title;
             lightbox.classList.add('active');
+
+            // פתרון ב' - 2: טעינת התמונות השכנות בתור ברקע מייד עם הפתיחה [2]
+            preloadNeighbors(index);
         }
 
         function closeLightbox() {
@@ -318,19 +654,31 @@
         }
 
         function nextImage() {
-            currentImageIndex = (currentImageIndex + 1) % imagesData.length;
+            currentImageIndex = (currentImageIndex + 1) % flatImagesList.length;
             updateLightbox();
         }
 
         function prevImage() {
-            currentImageIndex = (currentImageIndex - 1 + imagesData.length) % imagesData.length;
+            currentImageIndex = (currentImageIndex - 1 + flatImagesList.length) % flatImagesList.length;
             updateLightbox();
         }
 
         function updateLightbox() {
-            const img = imagesData[currentImageIndex];
-            document.getElementById('lightboxImg').src = `${currentImageIndex + 1}.jpg`;
-            document.getElementById('lightboxCaption').textContent = img.title || '';
+            const imgData = flatImagesList[currentImageIndex];
+            document.getElementById('lightboxImg').src = `https://cdn.jsdelivr.net/gh/b033069804-cmyk/alumni-gallery@main/${imgData.id}.jpg`;
+            document.getElementById('lightboxCaption').textContent = imgData.title;
+
+            // פתרון ב' - 2: טעינת התמונות השכנות בתור ברקע מייד עם המעבר [2]
+            preloadNeighbors(currentImageIndex);
+        }
+
+        // פונקציית עזר לטעינת התמונות שלפני ואחרי [2]
+        function preloadNeighbors(index) {
+            const nextIdx = (index + 1) % flatImagesList.length;
+            const prevIdx = (index - 1 + flatImagesList.length) % flatImagesList.length;
+            
+            preloadImageById(flatImagesList[nextIdx].id);
+            preloadImageById(flatImagesList[prevIdx].id);
         }
 
         window.addEventListener('keydown', (e) => {
